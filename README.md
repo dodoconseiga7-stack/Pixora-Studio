@@ -14,7 +14,8 @@ PORT=3300 npm run dev      # http://localhost:3300
 Créer un fichier `.env.local` (jamais envoyé sur GitHub) :
 
 ```
-ADMIN_PASSWORD=un-mot-de-passe-long
+ADMIN_EMAIL=dodoconseiga7@gmail.com     # seule adresse acceptée
+ADMIN_PASSWORD=un-mot-de-passe-long    # choisi par le propriétaire lui-même
 ADMIN_URL_SECRET=atelier-xxxxxxxx     # adresse secrète de l'administration, 8 caractères minimum
 ```
 
@@ -27,7 +28,7 @@ répondent « page introuvable ». En local, les données sont enregistrées dan
 1. **Importer le dépôt** sur vercel.com (Add New → Project).
 2. **Stockage des images** : onglet *Storage* → *Create* → *Blob* → relier au projet. Vercel ajoute seul la
    variable `BLOB_READ_WRITE_TOKEN`. Sans elle, le site s'affiche mais l'administration ne peut rien enregistrer.
-3. **Variables** (*Settings → Environment Variables*) : `ADMIN_PASSWORD` et `ADMIN_URL_SECRET`, puis redéployer.
+3. **Variables** (*Settings → Environment Variables*) : `ADMIN_EMAIL`, `ADMIN_PASSWORD` (tapé par le propriétaire lui-même) et `ADMIN_URL_SECRET`, puis redéployer.
 
 ## Où se trouve quoi
 

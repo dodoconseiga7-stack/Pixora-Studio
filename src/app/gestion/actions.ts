@@ -1,7 +1,7 @@
 'use server';
 
 import { updateTag } from 'next/cache';
-import { estAdmin, fermerSession, motDePasseConfigure, motDePasseCorrect, ouvrirSession } from '@/lib/admin';
+import { estAdmin, fermerSession, identifiantsCorrects, motDePasseConfigure, ouvrirSession } from '@/lib/admin';
 import { controlerImage, ecrireCatalogue, enregistrerImage, lireCatalogue, stockageDisponible, supprimerImage } from '@/lib/stockage';
 import { slug } from '@/lib/format';
 import type { Catalogue, FormuleId, TypeCreation } from '@/lib/types';
@@ -45,10 +45,10 @@ const idUnique = (base: string, existants: string[]) => {
 /* ───────── Connexion ───────── */
 
 export async function connexion(_: Resultat | null, fd: FormData): Promise<Resultat> {
-  if (!motDePasseConfigure()) return { ok: false, erreur: 'Aucun mot de passe n’est configuré (variable ADMIN_PASSWORD).' };
-  if (!motDePasseCorrect(String(fd.get('motdepasse') ?? ''))) {
+  if (!motDePasseConfigure()) return { ok: false, erreur: 'Connexion non configurée (variables ADMIN_EMAIL et ADMIN_PASSWORD).' };
+  if (!identifiantsCorrects(String(fd.get('email') ?? ''), String(fd.get('motdepasse') ?? ''))) {
     await new Promise((r) => setTimeout(r, 900)); // freine les essais en série
-    return { ok: false, erreur: 'Mot de passe incorrect.' };
+    return { ok: false, erreur: 'Adresse e-mail ou mot de passe incorrect.' };
   }
   await ouvrirSession();
   return { ok: true };

@@ -21,12 +21,17 @@ function signer(valeur: string) {
   return k ? createHmac('sha256', k).update(valeur).digest('base64url') : null;
 }
 
-export const motDePasseConfigure = () => !!process.env.ADMIN_PASSWORD;
+export const motDePasseConfigure = () => !!process.env.ADMIN_PASSWORD && !!process.env.ADMIN_EMAIL;
 
-export function motDePasseCorrect(saisi: string) {
-  const mdp = process.env.ADMIN_PASSWORD;
-  if (!mdp) return false;
-  return timingSafeEqual(empreinte(saisi), empreinte(mdp));
+/** Identifiants du propriétaire : son adresse e-mail (ADMIN_EMAIL) ET son mot de passe (ADMIN_PASSWORD). */
+export function identifiantsCorrects(email: string, motDePasse: string) {
+  const attenduEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+  const attenduMdp = process.env.ADMIN_PASSWORD;
+  if (!attenduEmail || !attenduMdp) return false;
+  // Les deux comparaisons sont toujours faites, en temps constant : rien n'indique laquelle a échoué.
+  const okEmail = timingSafeEqual(empreinte(email.trim().toLowerCase()), empreinte(attenduEmail));
+  const okMdp = timingSafeEqual(empreinte(motDePasse), empreinte(attenduMdp));
+  return okEmail && okMdp;
 }
 
 export async function ouvrirSession() {
