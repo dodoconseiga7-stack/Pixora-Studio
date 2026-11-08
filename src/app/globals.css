@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+/*
+ * PIXORA STUDIO — système visuel « la planche du graphiste »
+ * Blanc pur (le papier), un bleu franc pour l'action et les repères, un bleu nuit pour le texte.
+ * Une seule famille (Plus Jakarta Sans) : titres serrés et gras, texte large et lisible sur téléphone.
+ * Les créations portent la couleur ; l'interface reste en retrait.
+ */
+@theme {
+  --color-fond: #ffffff;
+  --color-fond-2: #f4f7fd;        /* bleu très pâle : aplats de section */
+  --color-surface: #ffffff;
+  --color-filet: #e2e8f3;
+  --color-filet-fort: #c9d3e6;
+  --color-encre: #0b1634;         /* bleu nuit : texte et panneaux sombres */
+  --color-encre-2: #15224a;
+  --color-sourdine: #4b5775;      /* 7:1 sur blanc */
+  --color-sourdine-clair: #a9b6d6;
+  --color-bleu: #1b4dd8;          /* l'accent unique (blanc dessus 6,2:1) */
+  --color-bleu-fonce: #1239ab;
+  --color-bleu-clair: #e9effd;
+  --color-succes: #13795b;
+  --color-erreur: #b42318;
+
+  --font-sans: var(--font-jakarta), system-ui, sans-serif;
+
+  --radius-ctrl: 14px;
+  --radius-carte: 22px;
+
+  --ease-sortie: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-cinema: cubic-bezier(0.65, 0, 0.15, 1);
+
+  --animate-defile: defile 46s linear infinite;
+  @keyframes defile { to { transform: translateX(-50%); } }
+}
+
+@layer base {
+  html {
+    background: var(--color-fond);
+    color: var(--color-encre);
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    background: var(--color-fond);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--color-bleu); color: #fff; }
+  :focus-visible { outline: 2px solid var(--color-bleu); outline-offset: 3px; }
+  .sur-sombre :focus-visible { outline-color: #fff; }
+  button, [role="button"] { cursor: pointer; }
+}
+
+/* Défilement doux (Lenis) */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+@layer utilities {
+  .conteneur { width: 100%; max-width: 84rem; margin-inline: auto; padding-inline: 1rem; }
+  @media (min-width: 640px) { .conteneur { padding-inline: 1.5rem; } }
+  @media (min-width: 1024px) { .conteneur { padding-inline: 2.5rem; } }
+  .section { padding-block: 4.5rem; }
+  @media (min-width: 1024px) { .section { padding-block: 7rem; } }
+  .titre { font-weight: 800; letter-spacing: -0.035em; line-height: 1.02; text-wrap: balance; }
+  .chapo { font-size: 1.125rem; line-height: 1.65; color: var(--color-sourdine); text-wrap: pretty; }
+  .chiffres { font-variant-numeric: tabular-nums lining-nums; }
+  .sans-barre { scrollbar-width: none; }
+  .sans-barre::-webkit-scrollbar { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
